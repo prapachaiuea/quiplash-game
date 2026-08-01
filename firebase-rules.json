@@ -23,6 +23,7 @@
           ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()"
         },
         "answers": {
+          ".read": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
           ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
           "$i": {
             "$uid": {
@@ -32,6 +33,7 @@
           }
         },
         "votes": {
+          ".read": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
           ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
           "$i": {
             "$uid": {
