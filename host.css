@@ -58,6 +58,19 @@ body {
   margin-top: 0.25rem;
 }
 
+.menu-link {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  opacity: 0.55;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.menu-link:hover { opacity: 1; }
+
 #app {
   max-width: 900px;
   margin: 0 auto;

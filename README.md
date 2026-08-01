@@ -2,15 +2,17 @@
 
 A browser version of the party game **Quiplash** (originally by Jackbox Games): two players get the same absurd prompt, answer privately, and everyone else votes on the funnier answer. Static site + Firebase Realtime Database, deployable on GitHub Pages for free.
 
-Two separate pages, on purpose:
+One link to share &mdash; `index.html` is a menu that sends each visitor to the right screen:
 
 - **`host.html`** &mdash; the shared screen. Put it on a TV, laptop, or iPad where everyone can see it. Nobody types into it once the game starts.
 - **`player.html`** &mdash; what each player opens on their own phone. This is where answers and votes are typed &mdash; kept private from the shared screen so the reveal actually lands.
 
+A link with a room code already in it (`index.html?room=BLUE2`) skips the menu and drops that visitor straight into the join screen &mdash; useful if the host wants to text a one-tap invite instead of reading the code aloud.
+
 ## How it works
 
-1. Open `host.html` on the shared screen and tap **Open a Room** to get a room code.
-2. Everyone else opens `player.html` on their phone, enters the code and their name.
+1. Open the site on the shared screen, tap **Host a Room**, then tap **Open a Room** to get a room code.
+2. Everyone else opens the same link on their phone, taps **Join a Room**, and enters the code and their name.
 3. The host starts the game (3&ndash;8 players). Every round, players are paired up; each pair gets the same prompt and privately writes an answer.
 4. Once everyone's answered, the host screen reveals each matchup one at a time. Everyone *not* in that matchup votes for the funnier answer, live on their phone.
 5. Points: 1 per vote received, +2 bonus for whichever answer got more votes.
@@ -42,11 +44,11 @@ npx serve .
 # or: python -m http.server 8080
 ```
 
-Then open `host.html` on one device/tab and `player.html` on others to test.
+Then open `index.html` on one device/tab and pick **Host** or **Join**; open it again in another tab to test the other role.
 
 ### 3. Deploy
 
-Push this folder to a GitHub repo and enable **GitHub Pages** (Settings &rarr; Pages &rarr; deploy from branch). Share the `player.html` URL (or the room code, once the host has one) with your group.
+Push this folder to a GitHub repo and enable **GitHub Pages** (Settings &rarr; Pages &rarr; deploy from branch). Share the repo's Pages URL (it serves `index.html` automatically) with your group &mdash; that's the one link everyone needs.
 
 ## Editing the prompt bank
 
@@ -55,9 +57,10 @@ Push this folder to a GitHub repo and enable **GitHub Pages** (Settings &rarr; P
 ## Project structure
 
 ```
+index.html / landing.css    the menu — one link, routes to host or player
 host.html / host.css        the shared screen
 player.html / player.css    each player's phone
-tokens.css                  shared color/type tokens for both screens
+tokens.css                  shared color/type tokens for all three pages
 prompts.json                the prompt bank
 firebase-config.js          your Firebase project config (paste after setup)
 firebase-rules.json         Realtime Database security rules (paste into Firebase console)

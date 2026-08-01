@@ -30,6 +30,19 @@ body {
   margin-top: 0.25rem;
 }
 
+.menu-link {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--cream);
+  opacity: 0.45;
+  text-decoration: none;
+  margin-bottom: 0.4rem;
+}
+
+.menu-link:hover { opacity: 1; }
+
 #app {
   width: 100%;
   max-width: 480px;
