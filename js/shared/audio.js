@@ -179,9 +179,9 @@ function tensionBpm() {
 }
 
 const SCENES = {
-  ambient: () => startPad([146.83, 185.0, 220.0], { type: "sine", swell: 5 }), // D3-F#3-A3, upbeat
-  suspense: () => startPad([130.81, 155.56, 196.0], { type: "triangle", swell: 3 }), // C3-D#3-G3, moodier
-  tension: () => startPulse([261.63, 293.66, 329.63, 392.0], { type: "triangle", getBpm: tensionBpm }),
+  ambient: () => startPad([164.81, 207.65, 246.94], { type: "triangle", swell: 3 }), // E3-G#3-B3, bright & bouncy
+  suspense: () => startPad([123.47, 146.83, 185.0], { type: "triangle", swell: 3 }), // B2-D3-F#3, will-they-win tension
+  tension: () => startPulse([329.63, 415.3, 493.88, 659.25], { type: "square", getBpm: tensionBpm }), // E4-G#4-B4-E5, arcade buzzer
 };
 
 function sceneKeyForPhase(phase) {
@@ -207,7 +207,7 @@ export function updateForState(state, { serverNow } = {}) {
   if (activePhase === lastPhase) return;
   lastPhase = activePhase;
 
-  if (activePhase === "final") playSting([220.0, 277.18, 329.63, 440.0], { duration: 2.0 }); // A2-C#3-E3-A3
+  if (activePhase === "final") playSting([164.81, 207.65, 246.94, 329.63], { duration: 2.0 }); // E3-G#3-B3-E4
 
   const sceneKey = sceneKeyForPhase(activePhase);
   if (sceneKey !== currentSceneKey) {
