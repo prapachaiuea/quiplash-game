@@ -33,7 +33,11 @@ export function render(state) {
   ranked.forEach(([uid, score], idx) => {
     const li = document.createElement("li");
     li.className = idx === 0 ? "leader" : "";
-    li.innerHTML = `<span>${players[uid]?.name || "?"}</span><span>${score}</span>`;
+    const nameEl = document.createElement("span");
+    nameEl.textContent = players[uid]?.name || "?";
+    const scoreEl = document.createElement("span");
+    scoreEl.textContent = score;
+    li.append(nameEl, scoreEl);
     list.appendChild(li);
   });
 
