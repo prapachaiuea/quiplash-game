@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiplash</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="player.css" />
+</head>
+<body>
+  <header class="console-header">
+    <h1 class="console-wordmark">quiplash</h1>
+    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
+  </header>
+
+  <main id="app">
+    <section id="view-landing" class="view">
+      <form id="form-landing">
+        <label>
+          Your name
+          <input id="input-name" type="text" maxlength="20" required autocomplete="off" placeholder="e.g. Beam" />
+        </label>
+        <p id="landing-join-row" class="hint" hidden>Joining room <strong id="landing-room-code"></strong></p>
+        <div id="landing-code-row" class="field-code">
+          <label>
+            Room code
+            <input id="input-room-code" type="text" maxlength="5" autocomplete="off" placeholder="BLUE2" style="text-transform:uppercase" required />
+          </label>
+        </div>
+        <button type="submit" class="btn-buzz">Join Room</button>
+      </form>
+      <p class="error-text" id="landing-error" hidden></p>
+    </section>
+
+    <section id="view-lobby" class="view" hidden>
+      <p class="console-status">You're in! Waiting for the host to start&hellip;</p>
+      <ul id="player-list" class="chip-list"></ul>
+    </section>
+
+    <section id="view-answering" class="view" hidden>
+      <div id="answering-active">
+        <p class="console-eyebrow">Your prompt</p>
+        <h2 class="prompt-text" id="my-prompt"></h2>
+        <form id="form-answer">
+          <textarea id="input-answer" maxlength="120" rows="3" placeholder="Type the funniest thing you've got&hellip;" required></textarea>
+          <button type="submit" class="btn-buzz">Submit Answer</button>
+        </form>
+        <div class="countdown-small" id="answering-countdown"></div>
+      </div>
+      <div id="answering-waiting" hidden>
+        <p class="console-status">Answer locked in.</p>
+        <p class="console-hint">Waiting for everyone else to finish writing&hellip;</p>
+      </div>
+      <div id="answering-spectator" hidden>
+        <p class="console-status">You're not in this matchup.</p>
+        <p class="console-hint">Watch the big screen &mdash; you'll vote once everyone's answers are in.</p>
+      </div>
+    </section>
+
+    <section id="view-voting" class="view" hidden>
+      <div id="voting-active">
+        <p class="console-eyebrow">Which is funnier?</p>
+        <h2 class="prompt-text" id="voting-prompt"></h2>
+        <div class="vote-options">
+          <button type="button" class="vote-card" id="vote-option-a"></button>
+          <button type="button" class="vote-card" id="vote-option-b"></button>
+        </div>
+      </div>
+      <div id="voting-voted" hidden>
+        <p class="console-status">Vote locked in!</p>
+        <p class="console-hint">Look up at the screen for the results.</p>
+      </div>
+      <div id="voting-in-matchup" hidden>
+        <p class="console-status">This one's about you.</p>
+        <p class="console-hint">Watch the screen to see who wins.</p>
+      </div>
+    </section>
+
+    <section id="view-round-end" class="view" hidden>
+      <p class="console-status">Round over &mdash; check the big screen for the scoreboard.</p>
+      <p class="my-score" id="my-score"></p>
+    </section>
+
+    <section id="view-final" class="view" hidden>
+      <p class="console-eyebrow">Game over</p>
+      <p class="my-score" id="final-score"></p>
+      <p class="console-hint">Thanks for playing &mdash; look up for the final results.</p>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+
+  <script type="module" src="js/player/main.js"></script>
+</body>
+</html>

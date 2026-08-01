@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiplash &mdash; Host Screen</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="host.css" />
+</head>
+<body>
+  <div class="marquee-border" aria-hidden="true">
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+    <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+  </div>
+
+  <header class="stage-header">
+    <h1 class="wordmark">QUIPLASH</h1>
+    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
+  </header>
+
+  <main id="app">
+    <section id="view-setup" class="view">
+      <p class="stage-tagline">The comedy answer-battle. Grab an iPad, put it where everyone can see it.</p>
+      <button id="btn-create-room" type="button" class="btn-primary">Open a Room</button>
+      <p class="error-text" id="setup-error" hidden></p>
+    </section>
+
+    <section id="view-lobby" class="view" hidden>
+      <p class="stage-instruction">Players join at <strong id="join-hint"></strong> using this code</p>
+      <div class="room-code-big" id="lobby-room-code"></div>
+      <ul id="player-list" class="chip-row"></ul>
+      <label class="rounds-picker">
+        Rounds
+        <select id="select-total-rounds">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </label>
+      <p id="lobby-hint" class="stage-hint"></p>
+      <button id="btn-start-game" type="button" class="btn-primary" hidden>Start Game</button>
+    </section>
+
+    <section id="view-answering" class="view" hidden>
+      <p class="stage-eyebrow">Round <span id="answering-round-number"></span> &mdash; writing answers</p>
+      <div class="countdown" id="answering-countdown">0:60</div>
+      <ul id="answering-status-list" class="chip-row"></ul>
+      <p class="stage-hint">Everyone's answering their own prompt on their phone right now.</p>
+      <button id="btn-skip-timer" type="button" class="btn-ghost">Everyone's Done &mdash; Skip to Voting</button>
+    </section>
+
+    <section id="view-voting" class="view" hidden>
+      <p class="stage-eyebrow" id="voting-eyebrow"></p>
+      <h2 class="prompt-banner" id="voting-prompt"></h2>
+
+      <div class="clash">
+        <div class="clash-card clash-card-a" id="card-a">
+          <p class="clash-answer" id="answer-a-text"></p>
+          <div class="vote-meter"><div class="vote-fill" id="fill-a"></div></div>
+          <p class="vote-count" id="votes-a-count">0 votes</p>
+        </div>
+        <div class="clash-bolt" aria-hidden="true">VS</div>
+        <div class="clash-card clash-card-b" id="card-b">
+          <p class="clash-answer" id="answer-b-text"></p>
+          <div class="vote-meter"><div class="vote-fill" id="fill-b"></div></div>
+          <p class="vote-count" id="votes-b-count">0 votes</p>
+        </div>
+      </div>
+
+      <p class="stage-hint" id="voting-hint">Everyone but this pair is voting now.</p>
+      <div class="button-row">
+        <button id="btn-reveal-matchup" type="button" class="btn-primary" hidden>Reveal Winner</button>
+        <button id="btn-next-matchup" type="button" class="btn-primary" hidden>Next Matchup</button>
+      </div>
+    </section>
+
+    <section id="view-round-end" class="view" hidden>
+      <h2 class="section-title">Scoreboard</h2>
+      <ol id="scoreboard-list" class="scoreboard"></ol>
+      <button id="btn-next-round" type="button" class="btn-primary" hidden></button>
+    </section>
+
+    <section id="view-final" class="view" hidden>
+      <p class="stage-eyebrow">Final Results</p>
+      <h2 class="winner-name" id="winner-name"></h2>
+      <ol id="final-scoreboard" class="scoreboard"></ol>
+      <button id="btn-new-game" type="button" class="btn-primary">New Game</button>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+
+  <script type="module" src="js/host/main.js"></script>
+</body>
+</html>

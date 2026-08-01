@@ -1,0 +1,46 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$roomId": {
+        "public": {
+          ".read": "auth != null",
+          ".write": "auth != null && (!data.child('host').exists() || auth.uid === data.child('host').val())"
+        },
+        "players": {
+          ".read": "auth != null",
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && (data.exists() || root.child('rooms').child($roomId).child('public/phase').val() === 'lobby')"
+          }
+        },
+        "scores": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()"
+        },
+        "matchups": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()"
+        },
+        "answers": {
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
+          "$i": {
+            "$uid": {
+              ".read": "auth != null && (auth.uid === $uid || auth.uid === root.child('rooms').child($roomId).child('public/host').val() || root.child('rooms').child($roomId).child('matchups').child($i).child('revealed').val() === true || (root.child('rooms').child($roomId).child('public/phase').val() === 'voting' && (root.child('rooms').child($roomId).child('public/matchupIndex').val() + '') === $i))",
+              ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('public/phase').val() === 'answering' && (root.child('rooms').child($roomId).child('matchups').child($i).child('playerA').val() === auth.uid || root.child('rooms').child($roomId).child('matchups').child($i).child('playerB').val() === auth.uid)"
+            }
+          }
+        },
+        "votes": {
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
+          "$i": {
+            "$uid": {
+              ".read": "auth != null && (auth.uid === $uid || auth.uid === root.child('rooms').child($roomId).child('public/host').val() || root.child('rooms').child($roomId).child('matchups').child($i).child('revealed').val() === true)",
+              ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('public/phase').val() === 'voting' && (root.child('rooms').child($roomId).child('public/matchupIndex').val() + '') === $i && root.child('rooms').child($roomId).child('matchups').child($i).child('playerA').val() !== auth.uid && root.child('rooms').child($roomId).child('matchups').child($i).child('playerB').val() !== auth.uid && (newData.val() === 'A' || newData.val() === 'B')"
+            }
+          }
+        }
+      }
+    }
+  }
+}
