@@ -5,6 +5,13 @@ import { showToast } from "../../shared/components.js";
 
 let initialized = false;
 
+// Tracks which round the answer input was last cleared for. The <input> is a single
+// persistent DOM node (this view is only ever hidden, never recreated), so whatever text was
+// last typed stays in it forever unless something explicitly clears it — previously nothing
+// did, so a player would see their round-1 answer still sitting in the box the next time they
+// were paired up in a later round.
+let clearedForRound = null;
+
 export function init() {
   if (initialized) return;
   initialized = true;
@@ -25,6 +32,7 @@ export function init() {
     btn.disabled = true;
     try {
       await submitAnswer(myIndex, text);
+      input.value = "";
     } catch {
       showToast("Could not submit your answer — try again.", true);
     } finally {
@@ -71,5 +79,14 @@ export function render(state) {
     active.hidden = false;
     waiting.hidden = true;
     document.getElementById("my-prompt").textContent = myMatchup.promptText;
+    // Safety net alongside the post-submit clear in init(): if this player answered in an
+    // earlier round and the field never got cleared for some reason (closed tab mid-type,
+    // refreshed), this catches it. Only clears once per round so it never fights with
+    // whatever they're actively typing right now.
+    const roundNumber = state.public?.roundNumber;
+    if (clearedForRound !== roundNumber) {
+      clearedForRound = roundNumber;
+      document.getElementById("input-answer").value = "";
+    }
   }
 }

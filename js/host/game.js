@@ -134,3 +134,26 @@ export async function proceedAfterRoundEnd(roomId) {
     await update(ref(db, `rooms/${roomId}/public`), { phase: "final" });
   }
 }
+
+// "New Game" previously just called location.reload(), which reconnects to the SAME room —
+// still sitting in phase:'final' — so it silently reloaded back onto the finished scoreboard
+// instead of actually starting anything new. answers/votes/matchups/scores all have parent-
+// level write rules for the host (see firebase-rules.json), so nulling each directly here is
+// safe — same pattern startRound() already uses for answers/votes. totalRounds and
+// usedPromptIndices are deliberately left alone: the round-count setting should persist, and
+// keeping the used-prompt history means a second game with the same group won't immediately
+// repeat prompts from the first one.
+export async function backToLobby(roomId) {
+  await set(ref(db, `rooms/${roomId}/answers`), null);
+  await set(ref(db, `rooms/${roomId}/votes`), null);
+  await set(ref(db, `rooms/${roomId}/matchups`), null);
+  await set(ref(db, `rooms/${roomId}/scores`), null);
+  await update(ref(db, `rooms/${roomId}/public`), {
+    phase: "lobby",
+    roundNumber: 0,
+    matchupIndex: 0,
+    matchupCount: 0,
+    lastByeUid: null,
+    timer: null,
+  });
+}

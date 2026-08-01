@@ -10,12 +10,15 @@ export function init() {
   if (initialized) return;
   initialized = true;
 
-  document.getElementById("btn-skip-timer").addEventListener("click", async () => {
+  document.getElementById("btn-skip-timer").addEventListener("click", async (e) => {
     const { roomId } = getState();
+    e.target.disabled = true;
     try {
       await advanceToVoting(roomId);
     } catch {
       showToast("Could not skip ahead.", true);
+    } finally {
+      e.target.disabled = false;
     }
   });
 

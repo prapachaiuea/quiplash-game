@@ -8,21 +8,27 @@ export function init() {
   if (initialized) return;
   initialized = true;
 
-  document.getElementById("btn-reveal-matchup").addEventListener("click", async () => {
+  document.getElementById("btn-reveal-matchup").addEventListener("click", async (e) => {
     const { roomId } = getState();
+    e.target.disabled = true;
     try {
       await revealMatchup(roomId);
     } catch {
       showToast("Could not reveal the results.", true);
+    } finally {
+      e.target.disabled = false;
     }
   });
 
-  document.getElementById("btn-next-matchup").addEventListener("click", async () => {
+  document.getElementById("btn-next-matchup").addEventListener("click", async (e) => {
     const { roomId } = getState();
+    e.target.disabled = true;
     try {
       await nextMatchup(roomId);
     } catch {
       showToast("Could not advance.", true);
+    } finally {
+      e.target.disabled = false;
     }
   });
 }
