@@ -43,6 +43,17 @@ body {
 
 .menu-link:hover { opacity: 1; }
 
+.mute-toggle {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.4rem;
+  opacity: 0.6;
+}
+
+.mute-toggle:hover { opacity: 1; }
+
 #app {
   width: 100%;
   max-width: 480px;

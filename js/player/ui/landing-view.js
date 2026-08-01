@@ -1,5 +1,6 @@
 import { joinRoom, getRoomIdFromUrl } from "../room.js";
 import { getLastName } from "../../shared/utils/storage.js";
+import { unlockAudio } from "../../shared/audio.js";
 
 let initialized = false;
 
@@ -24,6 +25,7 @@ export function init() {
   }
 
   form.addEventListener("submit", async (e) => {
+    unlockAudio();
     e.preventDefault();
     const name = inputName.value.trim();
     const code = (roomFromUrl || inputCode.value.trim()).toUpperCase();

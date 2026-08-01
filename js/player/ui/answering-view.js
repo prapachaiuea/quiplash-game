@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { submitAnswer } from "../actions.js";
 import { serverNow, formatCountdown } from "../../shared/utils/timer.js";
 import { showToast } from "../../shared/components.js";
+import { playSuccess } from "../../shared/audio.js";
 
 let initialized = false;
 
@@ -33,6 +34,7 @@ export function init() {
     try {
       await submitAnswer(myIndex, text);
       input.value = "";
+      playSuccess();
     } catch {
       showToast("Could not submit your answer — try again.", true);
     } finally {

@@ -7,6 +7,7 @@ import { renderRoute } from "./router.js";
 import { watchServerOffset } from "../shared/utils/timer.js";
 import { getLastRoom, getLastName } from "../shared/utils/storage.js";
 import { showToast } from "../shared/components.js";
+import { unlockAudio, isMuted, setMuted, playClick } from "../shared/audio.js";
 
 import * as landingView from "./ui/landing-view.js";
 import * as lobbyView from "./ui/lobby-view.js";
@@ -25,6 +26,8 @@ async function boot() {
     ensureAnswerVoteSubscriptions();
     ensureVotingAnswerSubscriptions();
   });
+  setupMusicToggle();
+  setupClickSfx();
   renderRoute(getState());
 
   watchServerOffset();
@@ -45,6 +48,36 @@ async function boot() {
     console.error(err);
     showToast("Failed to connect to Firebase — check firebase-config.js.", true);
   }
+}
+
+// One delegated listener covers every button in the console — including ones views build
+// later via render() — with a soft click tick, and doubles as the audio-unlock gesture.
+// No looping ambient bed on the player side: every phone in the room independently playing
+// the same background music out of sync with each other and the host's screen would be a
+// mess, so players only get these one-shot sounds (see js/shared/audio.js).
+function setupClickSfx() {
+  document.addEventListener("click", (e) => {
+    const control = e.target.closest("button");
+    if (!control || control.disabled) return;
+    unlockAudio();
+    playClick();
+  });
+}
+
+// Reflects the persisted mute preference on the header button and wires its toggle.
+function setupMusicToggle() {
+  const btn = document.getElementById("btn-mute-music");
+  function render() {
+    const mutedNow = isMuted();
+    btn.textContent = mutedNow ? "🔇" : "🔊";
+    btn.setAttribute("aria-pressed", String(mutedNow));
+  }
+  btn.addEventListener("click", () => {
+    unlockAudio();
+    setMuted(!isMuted());
+    render();
+  });
+  render();
 }
 
 boot().catch((err) => {

@@ -1,6 +1,7 @@
 import { getState } from "../state.js";
 import { revealMatchup, nextMatchup } from "../game.js";
 import { showToast } from "../../shared/components.js";
+import { playSuccess } from "../../shared/audio.js";
 
 let initialized = false;
 
@@ -13,6 +14,7 @@ export function init() {
     e.target.disabled = true;
     try {
       await revealMatchup(roomId);
+      playSuccess();
     } catch {
       showToast("Could not reveal the results.", true);
     } finally {
