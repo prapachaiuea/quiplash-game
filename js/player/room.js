@@ -1,5 +1,5 @@
 import {
-  ref, set, get, onValue, onDisconnect,
+  ref, set, get, remove, onValue, onDisconnect,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 import { db } from "../shared/firebase-init.js";
 import { getState, setState } from "./state.js";
@@ -159,6 +159,24 @@ export function ensureVotingAnswerSubscriptions() {
     answers.B = snap.val();
     publish();
   }));
+}
+
+// Reloads afterward rather than resetting state in place — the landing form's "joining room
+// X" mode is a one-time check made at init(), not reactive, so a same-page reset would leave
+// the join form stuck pointed at the room just left.
+export async function leaveRoom() {
+  const { roomId, uid } = getState();
+  if (!roomId) return;
+
+  try {
+    await onDisconnect(ref(db, `rooms/${roomId}/players/${uid}/online`)).cancel();
+    await remove(ref(db, `rooms/${roomId}/players/${uid}`));
+  } catch {
+    // Best-effort — still leave locally even if the write fails (e.g. offline).
+  }
+
+  clearLastRoom("player");
+  window.location.href = window.location.pathname;
 }
 
 export async function rejoinLastRoomIfAny(roomId, name) {

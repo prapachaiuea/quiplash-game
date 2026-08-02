@@ -1,7 +1,7 @@
 import { initAuth } from "../shared/auth.js";
 import { getState, setState, subscribe } from "./state.js";
 import {
-  getRoomIdFromUrl, ensureAnswerVoteSubscriptions, ensureVotingAnswerSubscriptions, rejoinLastRoomIfAny,
+  getRoomIdFromUrl, ensureAnswerVoteSubscriptions, ensureVotingAnswerSubscriptions, rejoinLastRoomIfAny, leaveRoom,
 } from "./room.js";
 import { renderRoute } from "./router.js";
 import { watchServerOffset } from "../shared/utils/timer.js";
@@ -28,6 +28,7 @@ async function boot() {
   });
   setupMusicToggle();
   setupClickSfx();
+  setupLeaveRoom();
   renderRoute(getState());
 
   watchServerOffset();
@@ -61,6 +62,17 @@ function setupClickSfx() {
     if (!control || control.disabled) return;
     unlockAudio();
     playClick();
+  });
+}
+
+function setupLeaveRoom() {
+  document.getElementById("btn-leave-room").addEventListener("click", async () => {
+    try {
+      await leaveRoom();
+    } catch (err) {
+      console.error(err);
+      showToast("Could not leave the room — check your connection.", true);
+    }
   });
 }
 

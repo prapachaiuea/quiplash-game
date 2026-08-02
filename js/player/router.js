@@ -25,4 +25,7 @@ export function renderRoute(state) {
       roomCodeDisplay.hidden = true;
     }
   }
+
+  const btnLeaveRoom = document.getElementById("btn-leave-room");
+  if (btnLeaveRoom) btnLeaveRoom.hidden = !state.roomId;
 }
