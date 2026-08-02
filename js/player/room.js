@@ -4,6 +4,7 @@ import {
 import { db } from "../shared/firebase-init.js";
 import { getState, setState } from "./state.js";
 import { saveLastRoom, saveLastName, clearLastRoom } from "../shared/utils/storage.js";
+import { showToast } from "../shared/components.js";
 
 let subscribedRoomId = null;
 let roomUnsubscribers = [];
@@ -13,6 +14,8 @@ let votingAnswerUnsubs = [];
 let subscribedAnswerPath = null;
 let subscribedVotePath = null;
 let subscribedVotingAnswersKey = null;
+let hadRealPublicData = false;
+let roomClosedHandled = false;
 
 export function getRoomIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -75,9 +78,23 @@ export function subscribeToRoom(roomId) {
   if (subscribedRoomId === roomId) return;
   if (subscribedRoomId !== null) unsubscribeFromRoom();
   subscribedRoomId = roomId;
+  hadRealPublicData = false;
+  roomClosedHandled = false;
 
   roomUnsubscribers.push(onValue(ref(db, `rooms/${roomId}/public`), (snap) => {
-    const publicData = snap.val() || {};
+    const publicData = snap.val();
+    if (!publicData) {
+      // Room's gone (host closed it, or it expired) — don't render a blank/broken screen,
+      // just tell the player and back out. Delayed reload gives the toast time to be seen.
+      if (hadRealPublicData && !roomClosedHandled) {
+        roomClosedHandled = true;
+        showToast("The host closed this room.", true);
+        setTimeout(() => leaveRoom(), 2000);
+      }
+      setState({ public: {}, phase: "lobby" });
+      return;
+    }
+    hadRealPublicData = true;
     setState({ public: publicData, phase: publicData.phase || "lobby" });
   }));
 

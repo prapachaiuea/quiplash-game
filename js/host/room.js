@@ -1,5 +1,5 @@
 import {
-  ref, set, update, onValue, onDisconnect,
+  ref, set, update, remove, onValue, onDisconnect,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 import { db } from "../shared/firebase-init.js";
 import { getState, setState } from "./state.js";
@@ -71,15 +71,15 @@ function unsubscribeFromRoom() {
   subscribedRoomId = null;
 }
 
-// Reloads afterward for a clean slate — same reasoning as the player side. Doesn't touch
-// the room itself (no reason to kick players just because the host stepped away from this
-// screen; they can reopen the room via the saved link, or someone else's screen stays live).
+// Rooms are one-time use — the host closing the show ends it for every player still in it,
+// then reloads locally for a clean slate (same reasoning as the player side).
 export async function leaveRoom() {
   const { roomId } = getState();
   if (!roomId) return;
 
   try {
     await onDisconnect(ref(db, `rooms/${roomId}/public/hostOnline`)).cancel();
+    await remove(ref(db, `rooms/${roomId}`));
   } catch {
     // Best-effort — still leave locally even if the write fails (e.g. offline).
   }

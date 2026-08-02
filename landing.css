@@ -12,6 +12,28 @@ body {
   min-height: 100dvh;
 }
 
+.back-home-pill {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.75;
+}
+
+.back-home-pill:hover {
+  opacity: 1;
+  color: var(--gold);
+}
+
 .panel {
   position: relative;
   flex: 1;

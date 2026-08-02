@@ -4,6 +4,7 @@
     ".write": false,
     "rooms": {
       "$roomId": {
+        ".write": "auth != null && !newData.exists() && auth.uid === data.child('public/host').val()",
         "public": {
           ".read": "auth != null",
           ".write": "auth != null && (!data.child('host').exists() || auth.uid === data.child('host').val())"
