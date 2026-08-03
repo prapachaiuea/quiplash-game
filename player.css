@@ -30,34 +30,46 @@ body {
   margin-top: 0.25rem;
 }
 
-.menu-link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--cream);
-  opacity: 0.45;
+.ticket-nav {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ticket-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--console);
+  background: var(--cream);
+  border: 2px solid var(--console);
+  border-radius: 4px;
+  padding: 0.28rem 0.55rem;
   text-decoration: none;
-  margin-bottom: 0.4rem;
-}
-
-.menu-link:hover { opacity: 1; }
-
-.leave-link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  background: none;
-  border: none;
-  color: var(--pink);
-  opacity: 0.7;
-  text-decoration: underline;
   cursor: pointer;
-  margin-bottom: 0.4rem;
+  box-shadow: 2px 2px 0 var(--teal);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-.leave-link:hover { opacity: 1; }
+.ticket-chip:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--teal); }
+.ticket-chip:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--teal); }
+
+.ticket-chip-home {
+  box-shadow: 2px 2px 0 var(--gold);
+}
+.ticket-chip-home:hover { box-shadow: 3px 3px 0 var(--gold); }
+.ticket-chip-home:active { box-shadow: 1px 1px 0 var(--gold); }
+
+.ticket-chip-leave {
+  color: var(--pink);
+  border-color: var(--pink);
+  box-shadow: 2px 2px 0 var(--pink);
+  margin-bottom: 0.4rem;
+}
+.ticket-chip-leave:hover { box-shadow: 3px 3px 0 var(--pink); }
+.ticket-chip-leave:active { box-shadow: 1px 1px 0 var(--pink); }
 
 .mute-toggle {
   background: none;
