@@ -2,20 +2,13 @@ import { ref, set, update } from "https://www.gstatic.com/firebasejs/10.13.2/fir
 import { db } from "../shared/firebase-init.js";
 import { getState } from "./state.js";
 import { shuffle } from "../shared/utils/id.js";
+import { loadPrompts } from "../shared/prompts.js";
 
 export const MIN_PLAYERS = 3;
 export const MAX_PLAYERS = 8;
 export const ANSWER_DURATION_MS = 60000;
 const VOTE_POINT = 1;
 const WINNER_BONUS = 2;
-
-let promptsCache = null;
-async function loadPrompts() {
-  if (promptsCache) return promptsCache;
-  const res = await fetch(new URL("../../prompts.json", import.meta.url));
-  promptsCache = await res.json();
-  return promptsCache;
-}
 
 // Pairs everyone up for this round. Odd headcount gets one bye — steered away from
 // whoever sat out last round when possible, so the same person isn't benched twice running.
@@ -58,7 +51,9 @@ export async function startRound(roomId) {
     const promptIdx = pool[i % pool.length];
     newlyUsed.push(promptIdx);
     matchupsData[i] = {
-      promptText: prompts[promptIdx],
+      // Stored as an index, not the resolved text, so each viewer's own language preference
+      // (not baked into the room at round-start) decides what's actually displayed.
+      promptIndex: promptIdx,
       playerA: m.playerA,
       playerB: m.playerB,
       revealed: false,

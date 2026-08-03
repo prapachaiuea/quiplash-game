@@ -3,12 +3,16 @@ import { revealMatchup, nextMatchup } from "../game.js";
 import { showToast } from "../../shared/components.js";
 import { playSuccess } from "../../shared/audio.js";
 import { t, onLangChange } from "../../shared/i18n.js";
+import { loadPrompts } from "../../shared/prompts.js";
 
 let initialized = false;
+let prompts = [];
 
 export function init() {
   if (initialized) return;
   initialized = true;
+
+  loadPrompts().then((data) => { prompts = data; });
 
   document.getElementById("btn-reveal-matchup").addEventListener("click", async (e) => {
     const { roomId } = getState();
@@ -35,7 +39,10 @@ export function init() {
     }
   });
 
-  onLangChange(() => render(getState()));
+  onLangChange(async () => {
+    prompts = await loadPrompts();
+    render(getState());
+  });
 }
 
 export function render(state) {
@@ -52,7 +59,7 @@ export function render(state) {
 
   document.getElementById("voting-eyebrow").textContent =
     t("voting.matchup", { i: i + 1, count: state.public?.matchupCount ?? 1 });
-  document.getElementById("voting-prompt").textContent = matchup.promptText;
+  document.getElementById("voting-prompt").textContent = prompts[matchup.promptIndex] || "";
   document.getElementById("answer-a-text").textContent = answers[matchup.playerA] || t("voting.noAnswer");
   document.getElementById("answer-b-text").textContent = answers[matchup.playerB] || t("voting.noAnswer");
 

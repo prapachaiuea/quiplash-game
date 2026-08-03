@@ -3,9 +3,11 @@ import { submitAnswer } from "../actions.js";
 import { serverNow, formatCountdown } from "../../shared/utils/timer.js";
 import { showToast } from "../../shared/components.js";
 import { playSuccess } from "../../shared/audio.js";
-import { t } from "../../shared/i18n.js";
+import { t, onLangChange } from "../../shared/i18n.js";
+import { loadPrompts } from "../../shared/prompts.js";
 
 let initialized = false;
+let prompts = [];
 
 // Tracks which round the answer input was last cleared for. The <input> is a single
 // persistent DOM node (this view is only ever hidden, never recreated), so whatever text was
@@ -17,6 +19,8 @@ let clearedForRound = null;
 export function init() {
   if (initialized) return;
   initialized = true;
+
+  loadPrompts().then((data) => { prompts = data; });
 
   document.getElementById("form-answer").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -44,6 +48,10 @@ export function init() {
   });
 
   setInterval(tick, 250);
+  onLangChange(async () => {
+    prompts = await loadPrompts();
+    render(getState());
+  });
 }
 
 function tick() {
@@ -81,7 +89,7 @@ export function render(state) {
   } else {
     active.hidden = false;
     waiting.hidden = true;
-    document.getElementById("my-prompt").textContent = myMatchup.promptText;
+    document.getElementById("my-prompt").textContent = prompts[myMatchup.promptIndex] || "";
     // Safety net alongside the post-submit clear in init(): if this player answered in an
     // earlier round and the field never got cleared for some reason (closed tab mid-type,
     // refreshed), this catches it. Only clears once per round so it never fights with

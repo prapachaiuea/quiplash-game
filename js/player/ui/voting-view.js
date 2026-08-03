@@ -1,13 +1,17 @@
 import { getState } from "../state.js";
 import { submitVote } from "../actions.js";
 import { showToast } from "../../shared/components.js";
-import { t } from "../../shared/i18n.js";
+import { t, onLangChange } from "../../shared/i18n.js";
+import { loadPrompts } from "../../shared/prompts.js";
 
 let initialized = false;
+let prompts = [];
 
 export function init() {
   if (initialized) return;
   initialized = true;
+
+  loadPrompts().then((data) => { prompts = data; });
 
   ["a", "b"].forEach((letter) => {
     document.getElementById(`vote-option-${letter}`).addEventListener("click", async () => {
@@ -20,6 +24,11 @@ export function init() {
         showToast(t("voting.toastVoteFailed"), true);
       }
     });
+  });
+
+  onLangChange(async () => {
+    prompts = await loadPrompts();
+    render(getState());
   });
 }
 
@@ -51,7 +60,7 @@ export function render(state) {
   voted.hidden = true;
   active.hidden = false;
 
-  document.getElementById("voting-prompt").textContent = matchup.promptText;
+  document.getElementById("voting-prompt").textContent = prompts[matchup.promptIndex] || "";
   document.getElementById("vote-option-a").textContent = state.votingAnswers?.A || "…";
   document.getElementById("vote-option-b").textContent = state.votingAnswers?.B || "…";
 }
