@@ -5,6 +5,7 @@ import { db } from "../shared/firebase-init.js";
 import { getState, setState } from "./state.js";
 import { saveLastRoom, saveLastName, clearLastRoom } from "../shared/utils/storage.js";
 import { showToast } from "../shared/components.js";
+import { t } from "../shared/i18n.js";
 
 let subscribedRoomId = null;
 let roomUnsubscribers = [];
@@ -88,7 +89,7 @@ export function subscribeToRoom(roomId) {
       // just tell the player and back out. Delayed reload gives the toast time to be seen.
       if (hadRealPublicData && !roomClosedHandled) {
         roomClosedHandled = true;
-        showToast("The host closed this room.", true);
+        showToast(t("shared.toastRoomClosed"), true);
         setTimeout(() => leaveRoom(), 2000);
       }
       setState({ public: {}, phase: "lobby" });

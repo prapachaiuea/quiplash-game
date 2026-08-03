@@ -10,62 +10,62 @@
 <body>
   <header class="console-header">
     <nav class="ticket-nav">
-      <a class="ticket-chip" href="index.html">Menu</a>
-      <a class="ticket-chip ticket-chip-home" href="https://prapachaiuea.github.io/party-games/">Home</a>
+      <a class="ticket-chip" href="index.html" data-i18n="nav.menu">Menu</a>
+      <a class="ticket-chip ticket-chip-home" href="https://prapachaiuea.github.io/party-games/" data-i18n="nav.home">Home</a>
     </nav>
     <h1 class="console-wordmark">quiplash</h1>
-    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
-    <button id="btn-leave-room" type="button" class="ticket-chip ticket-chip-leave" hidden>Leave</button>
-    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" title="Toggle sound">🔊</button>
+    <p class="room-code" id="room-code-display" hidden><span data-i18n="room.prefix">Room</span> <strong id="room-code-value"></strong></p>
+    <button id="btn-leave-room" type="button" class="ticket-chip ticket-chip-leave" hidden data-i18n="nav.leave">Leave</button>
+    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" data-i18n-title="mute.sound" title="Toggle sound">🔊</button>
   </header>
 
   <main id="app">
     <section id="view-landing" class="view">
       <form id="form-landing">
         <label>
-          Your name
-          <input id="input-name" type="text" maxlength="20" required autocomplete="off" placeholder="e.g. Beam" />
+          <span data-i18n="player.yourName">Your name</span>
+          <input id="input-name" type="text" maxlength="20" required autocomplete="off" placeholder="e.g. Beam" data-i18n-placeholder="player.namePlaceholder" />
         </label>
-        <p id="landing-join-row" class="hint" hidden>Joining room <strong id="landing-room-code"></strong></p>
+        <p id="landing-join-row" class="hint" hidden></p>
         <div id="landing-code-row" class="field-code">
           <label>
-            Room code
+            <span data-i18n="player.roomCode">Room code</span>
             <input id="input-room-code" type="text" maxlength="5" autocomplete="off" placeholder="BLUE2" style="text-transform:uppercase" required />
           </label>
         </div>
-        <button type="submit" class="btn-buzz">Join Room</button>
+        <button type="submit" class="btn-buzz" data-i18n="player.joinRoom">Join Room</button>
       </form>
       <p class="error-text" id="landing-error" hidden></p>
     </section>
 
     <section id="view-lobby" class="view" hidden>
-      <p class="console-status">You're in! Waiting for the host to start&hellip;</p>
+      <p class="console-status" data-i18n="player.lobbyWaiting">You're in! Waiting for the host to start&hellip;</p>
       <ul id="player-list" class="chip-list"></ul>
     </section>
 
     <section id="view-answering" class="view" hidden>
       <div id="answering-active">
-        <p class="console-eyebrow">Your prompt</p>
+        <p class="console-eyebrow" data-i18n="answering.yourPrompt">Your prompt</p>
         <h2 class="prompt-text" id="my-prompt"></h2>
         <form id="form-answer">
-          <textarea id="input-answer" maxlength="120" rows="3" placeholder="Type the funniest thing you've got&hellip;" required></textarea>
-          <button type="submit" class="btn-buzz">Submit Answer</button>
+          <textarea id="input-answer" maxlength="120" rows="3" placeholder="Type the funniest thing you've got&hellip;" required data-i18n-placeholder="answering.placeholder"></textarea>
+          <button type="submit" class="btn-buzz" data-i18n="answering.submit">Submit Answer</button>
         </form>
         <div class="countdown-small" id="answering-countdown"></div>
       </div>
       <div id="answering-waiting" hidden>
-        <p class="console-status">Answer locked in.</p>
-        <p class="console-hint">Waiting for everyone else to finish writing&hellip;</p>
+        <p class="console-status" data-i18n="answering.locked">Answer locked in.</p>
+        <p class="console-hint" data-i18n="answering.waitingOthers">Waiting for everyone else to finish writing&hellip;</p>
       </div>
       <div id="answering-spectator" hidden>
-        <p class="console-status">You're not in this matchup.</p>
-        <p class="console-hint">Watch the big screen &mdash; you'll vote once everyone's answers are in.</p>
+        <p class="console-status" data-i18n="answering.spectatorTitle">You're not in this matchup.</p>
+        <p class="console-hint" data-i18n="answering.spectatorHint">Watch the big screen &mdash; you'll vote once everyone's answers are in.</p>
       </div>
     </section>
 
     <section id="view-voting" class="view" hidden>
       <div id="voting-active">
-        <p class="console-eyebrow">Which is funnier?</p>
+        <p class="console-eyebrow" data-i18n="voting.which">Which is funnier?</p>
         <h2 class="prompt-text" id="voting-prompt"></h2>
         <div class="vote-options">
           <button type="button" class="vote-card" id="vote-option-a"></button>
@@ -73,24 +73,24 @@
         </div>
       </div>
       <div id="voting-voted" hidden>
-        <p class="console-status">Vote locked in!</p>
-        <p class="console-hint">Look up at the screen for the results.</p>
+        <p class="console-status" data-i18n="voting.locked">Vote locked in!</p>
+        <p class="console-hint" data-i18n="voting.lookUp">Look up at the screen for the results.</p>
       </div>
       <div id="voting-in-matchup" hidden>
-        <p class="console-status">This one's about you.</p>
-        <p class="console-hint">Watch the screen to see who wins.</p>
+        <p class="console-status" data-i18n="voting.aboutYou">This one's about you.</p>
+        <p class="console-hint" data-i18n="voting.watchWinner">Watch the screen to see who wins.</p>
       </div>
     </section>
 
     <section id="view-round-end" class="view" hidden>
-      <p class="console-status">Round over &mdash; check the big screen for the scoreboard.</p>
+      <p class="console-status" data-i18n="roundEnd.playerHint">Round over &mdash; check the big screen for the scoreboard.</p>
       <p class="my-score" id="my-score"></p>
     </section>
 
     <section id="view-final" class="view" hidden>
-      <p class="console-eyebrow">Game over</p>
+      <p class="console-eyebrow" data-i18n="final.gameOver">Game over</p>
       <p class="my-score" id="final-score"></p>
-      <p class="console-hint">Thanks for playing &mdash; look up for the final results.</p>
+      <p class="console-hint" data-i18n="final.playerHint">Thanks for playing &mdash; look up for the final results.</p>
     </section>
   </main>
 

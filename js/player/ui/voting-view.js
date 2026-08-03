@@ -1,6 +1,7 @@
 import { getState } from "../state.js";
 import { submitVote } from "../actions.js";
 import { showToast } from "../../shared/components.js";
+import { t } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -16,7 +17,7 @@ export function init() {
       try {
         await submitVote(i, letter.toUpperCase());
       } catch {
-        showToast("Could not submit your vote — try again.", true);
+        showToast(t("voting.toastVoteFailed"), true);
       }
     });
   });

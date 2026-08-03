@@ -5,6 +5,7 @@ import { renderRoute } from "./router.js";
 import { watchServerOffset, serverNow } from "../shared/utils/timer.js";
 import { showToast } from "../shared/components.js";
 import { unlockAudio, updateForState, isMuted, setMuted, playClick } from "../shared/audio.js";
+import { t, applyStaticTranslations, mountLangToggle } from "../shared/i18n.js";
 
 import * as setupView from "./ui/setup-view.js";
 import * as lobbyView from "./ui/lobby-view.js";
@@ -22,6 +23,8 @@ async function boot() {
     views.forEach((v) => v.render(state));
     updateForState(state, { serverNow });
   });
+  applyStaticTranslations();
+  mountLangToggle();
   setupMusicToggle();
   setupClickSfx();
   setupLeaveRoom();
@@ -35,7 +38,7 @@ async function boot() {
     await rejoinLastRoom();
   } catch (err) {
     console.error(err);
-    showToast("Failed to connect to Firebase — check firebase-config.js.", true);
+    showToast(t("shared.toastFirebaseFailed"), true);
   }
 }
 
@@ -57,7 +60,7 @@ function setupLeaveRoom() {
       await leaveRoom();
     } catch (err) {
       console.error(err);
-      showToast("Could not leave the room — check your connection.", true);
+      showToast(t("shared.toastLeaveFailed"), true);
     }
   });
 }
@@ -80,5 +83,5 @@ function setupMusicToggle() {
 
 boot().catch((err) => {
   console.error(err);
-  showToast("Failed to connect. Check your Firebase config and connection.", true);
+  showToast(t("shared.toastConnectFailed"), true);
 });

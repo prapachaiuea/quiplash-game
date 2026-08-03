@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { advanceToVoting } from "../game.js";
 import { serverNow, formatCountdown } from "../../shared/utils/timer.js";
 import { showToast } from "../../shared/components.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 let hasAutoAdvanced = false;
@@ -16,13 +17,14 @@ export function init() {
     try {
       await advanceToVoting(roomId);
     } catch {
-      showToast("Could not skip ahead.", true);
+      showToast(t("answering.toastSkipFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
 
   setInterval(tick, 250);
+  onLangChange(() => render(getState()));
 }
 
 function tick() {
@@ -46,7 +48,8 @@ export function render(state) {
     return;
   }
 
-  document.getElementById("answering-round-number").textContent = state.public?.roundNumber ?? "";
+  document.getElementById("answering-eyebrow").textContent =
+    t("answering.eyebrow", { n: state.public?.roundNumber ?? "" });
 
   const matchups = state.matchups || {};
   const answers = state.answers || {};
@@ -67,7 +70,7 @@ export function render(state) {
   const byeUid = state.public?.lastByeUid;
   if (byeUid && state.players?.[byeUid]) {
     const li = document.createElement("li");
-    li.textContent = `${state.players[byeUid].name} (sitting out)`;
+    li.textContent = `${state.players[byeUid].name} ${t("answering.sittingOut")}`;
     list.appendChild(li);
   }
 }

@@ -1,6 +1,7 @@
 import { joinRoom, getRoomIdFromUrl } from "../room.js";
 import { getLastName } from "../../shared/utils/storage.js";
 import { unlockAudio } from "../../shared/audio.js";
+import { t } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -19,7 +20,7 @@ export function init() {
   const roomFromUrl = getRoomIdFromUrl();
   if (roomFromUrl) {
     document.getElementById("landing-join-row").hidden = false;
-    document.getElementById("landing-room-code").textContent = roomFromUrl;
+    document.getElementById("landing-join-row").textContent = t("player.joiningRoom", { code: roomFromUrl });
     document.getElementById("landing-code-row").hidden = true;
     inputCode.required = false;
   }
@@ -38,10 +39,10 @@ export function init() {
       await joinRoom(code, name);
     } catch (err) {
       const messages = {
-        ROOM_NOT_FOUND: "That room code doesn't exist.",
-        ROOM_IN_PROGRESS: "That game has already started — wait for it to finish.",
+        ROOM_NOT_FOUND: t("player.errorRoomNotFound"),
+        ROOM_IN_PROGRESS: t("player.errorRoomInProgress"),
       };
-      errorEl.textContent = messages[err.message] || "Something went wrong. Please try again.";
+      errorEl.textContent = messages[err.message] || t("player.errorGeneric");
       errorEl.hidden = false;
     } finally {
       submitBtn.disabled = false;

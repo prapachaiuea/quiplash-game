@@ -37,3 +37,32 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Language toggle — present on every page, floating so it's reachable no matter the phase. */
+.lang-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--pink);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.lang-toggle:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--pink);
+}
+
+.lang-toggle:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--pink);
+}

@@ -3,6 +3,7 @@ import { submitAnswer } from "../actions.js";
 import { serverNow, formatCountdown } from "../../shared/utils/timer.js";
 import { showToast } from "../../shared/components.js";
 import { playSuccess } from "../../shared/audio.js";
+import { t } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -36,7 +37,7 @@ export function init() {
       input.value = "";
       playSuccess();
     } catch {
-      showToast("Could not submit your answer — try again.", true);
+      showToast(t("answering.toastSubmitFailed"), true);
     } finally {
       btn.disabled = false;
     }

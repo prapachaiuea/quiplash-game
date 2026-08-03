@@ -1,5 +1,6 @@
 import { createRoom } from "../room.js";
 import { showToast } from "../../shared/components.js";
+import { t } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -17,7 +18,7 @@ export function init() {
       await createRoom();
     } catch (err) {
       console.error(err);
-      errorEl.textContent = "Could not open a room. Check firebase-config.js and try again.";
+      errorEl.textContent = t("setup.createError");
       errorEl.hidden = false;
     } finally {
       btn.disabled = false;

@@ -17,28 +17,28 @@
 
   <header class="stage-header">
     <nav class="ticket-nav">
-      <a class="ticket-chip" href="index.html">Menu</a>
-      <a class="ticket-chip ticket-chip-home" href="https://prapachaiuea.github.io/party-games/">Home</a>
+      <a class="ticket-chip" href="index.html" data-i18n="nav.menu">Menu</a>
+      <a class="ticket-chip ticket-chip-home" href="https://prapachaiuea.github.io/party-games/" data-i18n="nav.home">Home</a>
     </nav>
     <h1 class="wordmark">QUIPLASH</h1>
-    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
-    <button id="btn-leave-room" type="button" class="ticket-chip ticket-chip-leave" hidden>Leave</button>
-    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" title="Toggle music">🔊</button>
+    <p class="room-code" id="room-code-display" hidden><span data-i18n="room.prefix">Room</span> <strong id="room-code-value"></strong></p>
+    <button id="btn-leave-room" type="button" class="ticket-chip ticket-chip-leave" hidden data-i18n="nav.leave">Leave</button>
+    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" data-i18n-title="mute.music" title="Toggle music">🔊</button>
   </header>
 
   <main id="app">
     <section id="view-setup" class="view">
-      <p class="stage-tagline">The comedy answer-battle. Grab an iPad, put it where everyone can see it.</p>
-      <button id="btn-create-room" type="button" class="btn-primary">Open a Room</button>
+      <p class="stage-tagline" data-i18n="setup.tagline">The comedy answer-battle. Grab an iPad, put it where everyone can see it.</p>
+      <button id="btn-create-room" type="button" class="btn-primary" data-i18n="setup.createRoom">Open a Room</button>
       <p class="error-text" id="setup-error" hidden></p>
     </section>
 
     <section id="view-lobby" class="view" hidden>
-      <p class="stage-instruction">Players join at <strong id="join-hint"></strong> using this code</p>
+      <p class="stage-instruction" id="lobby-instruction"></p>
       <div class="room-code-big" id="lobby-room-code"></div>
       <ul id="player-list" class="chip-row"></ul>
       <label class="rounds-picker">
-        Rounds
+        <span data-i18n="lobby.rounds">Rounds</span>
         <select id="select-total-rounds">
           <option value="2">2</option>
           <option value="3" selected>3</option>
@@ -47,15 +47,15 @@
         </select>
       </label>
       <p id="lobby-hint" class="stage-hint"></p>
-      <button id="btn-start-game" type="button" class="btn-primary" hidden>Start Game</button>
+      <button id="btn-start-game" type="button" class="btn-primary" hidden data-i18n="lobby.startGame">Start Game</button>
     </section>
 
     <section id="view-answering" class="view" hidden>
-      <p class="stage-eyebrow">Round <span id="answering-round-number"></span> &mdash; writing answers</p>
+      <p class="stage-eyebrow" id="answering-eyebrow"></p>
       <div class="countdown" id="answering-countdown">0:60</div>
       <ul id="answering-status-list" class="chip-row"></ul>
-      <p class="stage-hint">Everyone's answering their own prompt on their phone right now.</p>
-      <button id="btn-skip-timer" type="button" class="btn-ghost">Everyone's Done &mdash; Skip to Voting</button>
+      <p class="stage-hint" data-i18n="answering.hint">Everyone's answering their own prompt on their phone right now.</p>
+      <button id="btn-skip-timer" type="button" class="btn-ghost" data-i18n="answering.skip">Everyone's Done &mdash; Skip to Voting</button>
     </section>
 
     <section id="view-voting" class="view" hidden>
@@ -76,24 +76,24 @@
         </div>
       </div>
 
-      <p class="stage-hint" id="voting-hint">Everyone but this pair is voting now.</p>
+      <p class="stage-hint" id="voting-hint" data-i18n="voting.hintOpen">Everyone but this pair is voting now.</p>
       <div class="button-row">
-        <button id="btn-reveal-matchup" type="button" class="btn-primary" hidden>Reveal Winner</button>
-        <button id="btn-next-matchup" type="button" class="btn-primary" hidden>Next Matchup</button>
+        <button id="btn-reveal-matchup" type="button" class="btn-primary" hidden data-i18n="voting.reveal">Reveal Winner</button>
+        <button id="btn-next-matchup" type="button" class="btn-primary" hidden data-i18n="voting.next">Next Matchup</button>
       </div>
     </section>
 
     <section id="view-round-end" class="view" hidden>
-      <h2 class="section-title">Scoreboard</h2>
+      <h2 class="section-title" data-i18n="roundEnd.title">Scoreboard</h2>
       <ol id="scoreboard-list" class="scoreboard"></ol>
       <button id="btn-next-round" type="button" class="btn-primary" hidden></button>
     </section>
 
     <section id="view-final" class="view" hidden>
-      <p class="stage-eyebrow">Final Results</p>
+      <p class="stage-eyebrow" data-i18n="final.eyebrow">Final Results</p>
       <h2 class="winner-name" id="winner-name"></h2>
       <ol id="final-scoreboard" class="scoreboard"></ol>
-      <button id="btn-new-game" type="button" class="btn-primary">New Game</button>
+      <button id="btn-new-game" type="button" class="btn-primary" data-i18n="final.newGame">New Game</button>
     </section>
   </main>
 

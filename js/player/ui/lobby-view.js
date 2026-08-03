@@ -1,4 +1,9 @@
-export function init() {}
+import { getState } from "../state.js";
+import { t, onLangChange } from "../../shared/i18n.js";
+
+export function init() {
+  onLangChange(() => render(getState()));
+}
 
 export function render(state) {
   if (state.phase !== "lobby" || !state.roomId) return;
@@ -7,7 +12,7 @@ export function render(state) {
   list.innerHTML = "";
   Object.entries(state.players || {}).forEach(([uid, p]) => {
     const li = document.createElement("li");
-    li.textContent = uid === state.uid ? `${p.name} (you)` : p.name;
+    li.textContent = uid === state.uid ? `${p.name} ${t("player.you")}` : p.name;
     list.appendChild(li);
   });
 }

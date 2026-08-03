@@ -1,6 +1,7 @@
 import { getState } from "../state.js";
 import { backToLobby } from "../game.js";
 import { showToast } from "../../shared/components.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -14,11 +15,13 @@ export function init() {
     try {
       await backToLobby(roomId);
     } catch {
-      showToast("Could not start a new game — check your connection.", true);
+      showToast(t("final.toastFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
+
+  onLangChange(() => render(getState()));
 }
 
 export function render(state) {
@@ -29,8 +32,8 @@ export function render(state) {
   const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
 
   document.getElementById("winner-name").textContent = ranked.length
-    ? `${players[ranked[0][0]]?.name || "?"} wins!`
-    : "Game over";
+    ? t("final.winnerName", { name: players[ranked[0][0]]?.name || "?" })
+    : t("final.gameOver");
 
   const list = document.getElementById("final-scoreboard");
   list.innerHTML = "";

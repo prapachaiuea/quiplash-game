@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { revealMatchup, nextMatchup } from "../game.js";
 import { showToast } from "../../shared/components.js";
 import { playSuccess } from "../../shared/audio.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -16,7 +17,7 @@ export function init() {
       await revealMatchup(roomId);
       playSuccess();
     } catch {
-      showToast("Could not reveal the results.", true);
+      showToast(t("voting.toastRevealFailed"), true);
     } finally {
       e.target.disabled = false;
     }
@@ -28,11 +29,13 @@ export function init() {
     try {
       await nextMatchup(roomId);
     } catch {
-      showToast("Could not advance.", true);
+      showToast(t("voting.toastAdvanceFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
+
+  onLangChange(() => render(getState()));
 }
 
 export function render(state) {
@@ -48,10 +51,10 @@ export function render(state) {
   const nameB = state.players?.[matchup.playerB]?.name || "Player B";
 
   document.getElementById("voting-eyebrow").textContent =
-    `Matchup ${i + 1} of ${state.public?.matchupCount ?? 1}`;
+    t("voting.matchup", { i: i + 1, count: state.public?.matchupCount ?? 1 });
   document.getElementById("voting-prompt").textContent = matchup.promptText;
-  document.getElementById("answer-a-text").textContent = answers[matchup.playerA] || "(no answer submitted)";
-  document.getElementById("answer-b-text").textContent = answers[matchup.playerB] || "(no answer submitted)";
+  document.getElementById("answer-a-text").textContent = answers[matchup.playerA] || t("voting.noAnswer");
+  document.getElementById("answer-b-text").textContent = answers[matchup.playerB] || t("voting.noAnswer");
 
   let votesA = 0;
   let votesB = 0;
@@ -63,8 +66,8 @@ export function render(state) {
 
   document.getElementById("fill-a").style.width = `${total ? (votesA / total) * 100 : 0}%`;
   document.getElementById("fill-b").style.width = `${total ? (votesB / total) * 100 : 0}%`;
-  document.getElementById("votes-a-count").textContent = `${votesA} vote${votesA === 1 ? "" : "s"}`;
-  document.getElementById("votes-b-count").textContent = `${votesB} vote${votesB === 1 ? "" : "s"}`;
+  document.getElementById("votes-a-count").textContent = t("voting.votes", { n: votesA, s: votesA === 1 ? "" : "s" });
+  document.getElementById("votes-b-count").textContent = t("voting.votes", { n: votesB, s: votesB === 1 ? "" : "s" });
 
   const cardA = document.getElementById("card-a");
   const cardB = document.getElementById("card-b");
@@ -72,8 +75,13 @@ export function render(state) {
   cardB.classList.toggle("winner", matchup.revealed && votesB > votesA);
 
   document.getElementById("voting-hint").textContent = matchup.revealed
-    ? `${nameA} wrote "${answers[matchup.playerA] || ""}" — ${nameB} wrote "${answers[matchup.playerB] || ""}"`
-    : "Everyone but this pair is voting now.";
+    ? t("voting.revealedHint", {
+        nameA,
+        answerA: answers[matchup.playerA] || "",
+        nameB,
+        answerB: answers[matchup.playerB] || "",
+      })
+    : t("voting.hintOpen");
 
   document.getElementById("btn-reveal-matchup").hidden = matchup.revealed;
   document.getElementById("btn-next-matchup").hidden = !matchup.revealed;
